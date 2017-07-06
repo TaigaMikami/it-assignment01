@@ -9,8 +9,6 @@ end
 class VendingMachine
   AVAILABLE_MONEY = [10,50,100,500,1000]
 
-
-
   def initialize
     @total = 0
     5.times
