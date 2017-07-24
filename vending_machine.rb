@@ -23,7 +23,7 @@ end
 class VendingMachine
   AVAILABLE_MONEY = [10,50,100,500,1000]
 
-  attr_accessor :total, :sale_amount
+  attr_accessor :total, :sale_amount # procies
   def initialize
     @total = 0
     @drink_menu = {} #飲み物のハッシュ配列
@@ -55,7 +55,7 @@ class VendingMachine
     puts @drink_menu.map{|name, info|  [name, { price: info[:price], stock: info[:drinks].size }]}
   end
 
-  def available_puchase(drink_name)#購入可能確認
+  def available_puchase(drink_name)#購入可能確認 # purchase
     can_buy = @drink_menu.select{|_, info| total >= info[:price] && info[:drinks].any?}.keys
     puts "購入可能#{can_buy}"
     puts can_buy.include?(drink_name)
@@ -74,17 +74,30 @@ class VendingMachine
 end
 
 
-#インスタンス作成
+#インスタンス作成 <- コードを読めばわかるので、コメント内容は「処理開始」とかのほうが良さそうです。 @ahaha0807
 machine = VendingMachine.new
 
-money = gets.to_i
-machine.insert(money)
-money = gets.to_i
+money = gets.to_i # [Bad]いきなり入力待ちにすると、どうすればいいのかわからなくなるので、インフォメーションを表示する @ahaha0807
+machine.insert(money) # [Good!]動作対象.処理内容（）という形でメソッド名等を付けてる @ahaha0807
+money = gets.to_i 
 machine.insert(money)
 
+# [Soso]初期化のタイミングは78行目のタイミングのほうがわかりやすい @ahaha0807
 machine.store(Drink.water)
 machine.store(Drink.redbull)
 
 machine.stock_info
-machine.available_puchase(:coke)
+machine.available_puchase(:coke) # [Soso] これは結果を true/false を返すようにした方が理解しやすいかも？ @ahaha0807
+# [Bad] available_purchase だと日本語では「購入可能な購入」とかになってしまって、意味が通じにくいので、 check_purchaseとかにするとわかりやすそう @ahaha0807
 machine.purchase(:coke)
+
+=begin
+[Soso]
+
+if machine.check_purchase
+  machine.purchase
+end
+
+とかにすれば、処理の流れが見通しやすいと思います
+@ahaha0807
+=end
